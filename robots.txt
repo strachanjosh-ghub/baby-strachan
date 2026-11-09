@@ -1,0 +1,3 @@
+# A private family guessing game. Please don't index it.
+User-agent: *
+Disallow: /

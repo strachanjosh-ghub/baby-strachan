@@ -1,0 +1,26 @@
+# Baby Strachan — a static one-pager. Nothing to build.
+[build]
+  publish = "."
+  command = ""
+
+# One file, so it must never be served stale after a push.
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    # A family game, not something strangers should find.
+    X-Robots-Tag = "noindex, nofollow"
+    # 'unsafe-inline' is required: the page carries its own CSS and JS.
+    # Apps Script redirects POSTs to googleusercontent, so both hosts are listed.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data:; connect-src https://script.google.com https://script.googleusercontent.com; form-action 'none'; frame-ancestors 'none'; base-uri 'self'"
+
+# No catch-all redirect on purpose: the app routes on the #hash, which never
+# reaches the server, so a SPA fallback would only hide 404.html.
