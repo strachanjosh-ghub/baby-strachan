@@ -14,10 +14,32 @@ gingham, and an illustrated baby that changes with your guesses.
 | `apps-script.gs` | the Google Apps Script behind it: storage, duplicate checking, email |
 | `DESIGN.md` | design tokens, components, and how to add a screen consistently |
 
-## Hosting it
+## Hosting it on Netlify
 
-Drag `index.html` onto [Netlify Drop](https://app.netlify.com/drop), or turn on
-GitHub Pages for this repo. There is nothing to build.
+This repo is set up for Netlify. There is nothing to build, so the config is
+small, and once connected every push to `main` redeploys the site.
+
+In Netlify: **Add new site -> Import an existing project -> GitHub ->
+baby-strachan**. Leave the build command **empty** and set the publish
+directory to **`.`** — `netlify.toml` already says both, so the defaults
+Netlify offers should be correct.
+
+What `netlify.toml` does:
+
+| Setting | Why |
+|---|---|
+| `Cache-Control: max-age=0, must-revalidate` on `/index.html` | the whole app is that one file, so a push must never be served stale |
+| `connect-src script.google.com script.googleusercontent.com` | Apps Script redirects a POST to the second host; without it every save fails silently |
+| `X-Robots-Tag` + `robots.txt` | a family game, not something strangers should find |
+| `X-Frame-Options`, `Referrer-Policy`, `nosniff`, `Permissions-Policy` | ordinary hardening |
+
+There is deliberately **no catch-all redirect**. The app routes on the `#hash`,
+which never reaches the server, so a SPA fallback would only stop `404.html`
+ever being served.
+
+If you change the font strategy or add an external script, update the
+`Content-Security-Policy` in `netlify.toml` to match, or the browser will block
+it.
 
 ## The backend
 
