@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Baby Strachan Predictions</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=Yellowtail&display=swap">
+</head>
+<body>
+<style>
+/* ============================================================================
+   DESIGN TOKENS — change these, not the rules below
+   Layout: ivory reading surface, gingham only at the page edge and on
+   celebratory moments. One question per card, action bar pinned to the thumb.
+   ========================================================================== */
+:root{
+  /* colour */
+  --olive:#44512F;          /* primary text + primary action        9.0:1 on ivory */
+  --olive-ink:#2F3920;      /* headings                            13.6:1 */
+  --sage:#687647;           /* secondary accent                     4.8:1 */
+  --sage-mid:#8FA06C;       /* decorative only, never text */
+  --sage-pale:#DCE4CC;      /* selected fills, bars */
+  --line:#D5DCC4;           /* hairlines */
+  --line-strong:#B4C098;
+  --ivory:#FCFBF4;          /* reading surface */
+  --ivory-sunk:#F4F2E6;     /* inset wells */
+  --gingham:rgba(112,130,80,.22);
+  --muted:#5E6B47;          /* secondary text                       6.4:1 */
+  --carrot:#C2662A;
+  /* illustration */
+  --skin:#F6DCC6; --skin-sh:#EBC4A6; --blush:#E3A08F;
+  --suit:#A8B881; --suit-sh:#93A46C; --suit-lt:#C2CEA3;
+  --outline:#7A6A48; --hairc:#9A7B55; --eyedark:#3B3226;
+  --berry:#9A3F3F;          /* errors */
+  --berry-bg:#F8EDEC;
+  --good:#3F6B43;           /* saved / success */
+  --good-bg:#EAF1E8;
+
+  /* type */
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Work Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --script:'Yellowtail',cursive;
+
+  /* scale */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:22px; --s6:30px; --s7:42px;
+  --r-sm:8px; --r-md:14px; --r-lg:20px; --r-pill:999px;
+  --tap:48px;
+  --shadow-1:0 1px 2px rgba(47,57,32,.06);
+  --shadow-2:0 2px 10px rgba(47,57,32,.09);
+  --shadow-3:0 8px 28px rgba(47,57,32,.14);
+  --ease:cubic-bezier(.22,.8,.34,1);
+  color-scheme:light;
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;scroll-behavior:auto!important;}
+}
+
+*{box-sizing:border-box;}
+html{height:100%;-webkit-text-size-adjust:100%;}
+body{
+  margin:0;min-height:100%;font-family:var(--sans);font-size:16px;line-height:1.5;
+  color:var(--olive);background:var(--ivory-sunk);
+  background-image:
+    repeating-linear-gradient(90deg,var(--gingham) 0 26px,transparent 26px 52px),
+    repeating-linear-gradient(0deg,var(--gingham) 0 26px,transparent 26px 52px);
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,p,ul,ol,figure{margin:0;}
+button,input,select{font:inherit;color:inherit;}
+:focus-visible{outline:3px solid var(--olive);outline-offset:2px;border-radius:4px;}
+[hidden]{display:none!important;}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+
+/* ---------------------------------------------------------------- shell --
+   One column, capped for tablets, with the action bar inside the column so
+   it never floats away from the content on a wide screen. */
+.app{
+  max-width:520px;margin:0 auto;min-height:100dvh;background:var(--ivory);
+  box-shadow:var(--shadow-3);display:flex;flex-direction:column;position:relative;
+}
+.scr{display:none;flex-direction:column;flex:1;min-height:0;}
+.scr.on{display:flex;}
+
+.topbar{
+  display:flex;align-items:center;gap:var(--s3);
+  padding:max(var(--s3),env(safe-area-inset-top)) var(--s4) var(--s3);
+  border-bottom:1px solid var(--line);background:var(--ivory);
+  position:sticky;top:0;z-index:5;
+}
+.brand{font-family:var(--script);font-size:19px;color:var(--sage);line-height:1;flex:none;}
+.topbar .spacer{flex:1;}
+.stepcount{font-size:13px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;}
+
+.progress{display:flex;gap:3px;padding:0 var(--s4) var(--s3);background:var(--ivory);
+  position:sticky;top:57px;z-index:5;}
+.progress i{flex:1;height:4px;border-radius:2px;background:var(--line);transition:background .2s var(--ease);}
+.progress i[data-s="done"]{background:var(--sage-mid);}
+.progress i[data-s="now"]{background:var(--olive);}
+
+.body{flex:1;min-height:0;overflow-y:auto;padding:var(--s5) var(--s4) var(--s4);
+  display:flex;flex-direction:column;gap:var(--s4);}
+.actions{
+  position:sticky;bottom:0;display:flex;gap:var(--s3);align-items:center;
+  padding:var(--s3) var(--s4) max(var(--s4),env(safe-area-inset-bottom));
+  background:linear-gradient(180deg,rgba(252,251,244,0) 0%,var(--ivory) 28%);
+  border-top:1px solid var(--line);
+}
+
+/* ---------------------------------------------------------------- type --- */
+.q{font-family:var(--serif);font-weight:600;font-size:clamp(26px,7vw,33px);line-height:1.12;
+  color:var(--olive-ink);text-wrap:balance;}
+.q-help{font-size:14px;color:var(--muted);margin-top:var(--s2);}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sage);}
+.lede{font-size:16px;color:var(--muted);line-height:1.6;}
+
+/* ---------------------------------------------------------------- button - */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);
+  min-height:var(--tap);padding:0 var(--s5);border-radius:var(--r-pill);
+  font-size:16px;font-weight:600;letter-spacing:.01em;cursor:pointer;border:1.5px solid transparent;
+  transition:background .15s var(--ease),transform .08s var(--ease),box-shadow .15s var(--ease);
+}
+.btn-primary{background:var(--olive);color:var(--ivory);box-shadow:var(--shadow-2);flex:1;}
+.btn-primary:hover{background:var(--olive-ink);}
+.btn-primary:active{transform:translateY(1px);box-shadow:var(--shadow-1);}
+.btn-primary:disabled{background:var(--ivory-sunk);color:var(--muted);border-color:var(--line);
+  box-shadow:none;cursor:not-allowed;}
+.btn-ghost{background:transparent;color:var(--olive);border-color:var(--line-strong);}
+.btn-ghost:hover{background:var(--ivory-sunk);}
+.btn-text{background:transparent;color:var(--sage);border:0;min-height:44px;padding:0 var(--s3);
+  font-size:15px;font-weight:600;text-decoration:underline;text-underline-offset:3px;}
+.btn-icon{min-height:44px;min-width:44px;padding:0;border-radius:var(--r-pill);
+  background:transparent;border:1.5px solid var(--line-strong);color:var(--olive);
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:21px;line-height:1;}
+.btn-icon:hover{background:var(--ivory-sunk);}
+.btn-icon:disabled{opacity:.4;cursor:not-allowed;}
+
+/* ---------------------------------------------------------------- field -- */
+.field label{display:block;font-size:14px;font-weight:600;color:var(--olive-ink);margin-bottom:var(--s2);}
+.field input{
+  width:100%;min-height:var(--tap);padding:0 var(--s4);border:1.5px solid var(--line-strong);
+  border-radius:var(--r-md);background:var(--ivory);font-size:16px;
+}
+.field input::placeholder{color:#93A078;}
+.field input:focus{border-color:var(--olive);outline:none;box-shadow:0 0 0 3px var(--sage-pale);}
+.field .help{font-size:13px;color:var(--muted);margin-top:6px;}
+.field[data-invalid] input{border-color:var(--berry);}
+.err{display:flex;gap:7px;align-items:flex-start;font-size:13.5px;color:var(--berry);margin-top:6px;}
+.err::before{content:"!";flex:none;width:17px;height:17px;border-radius:50%;background:var(--berry);
+  color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;margin-top:1px;}
+
+/* -------------------------------------------------------------- choices -- */
+.choices{display:grid;gap:var(--s3);}
+.choices[data-cols="2"]{grid-template-columns:1fr 1fr;}
+.choice{
+  position:relative;display:flex;align-items:center;gap:var(--s3);width:100%;
+  min-height:var(--tap);padding:var(--s3) var(--s4);text-align:left;cursor:pointer;
+  background:var(--ivory);border:1.5px solid var(--line-strong);border-radius:var(--r-md);
+  transition:border-color .14s var(--ease),background .14s var(--ease);
+}
+.choice:hover{background:var(--ivory-sunk);}
+.choice .ctext{flex:1;min-width:0;}
+.choice .ctitle{font-size:16px;font-weight:600;color:var(--olive-ink);}
+.choice .csub{font-size:13px;color:var(--muted);margin-top:1px;}
+.choice .tick{flex:none;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line-strong);
+  display:grid;place-items:center;background:var(--ivory);}
+.choice .tick svg{width:13px;height:13px;opacity:0;transform:scale(.6);transition:all .14s var(--ease);}
+.choice[aria-pressed="true"]{border-color:var(--olive);border-width:2.5px;background:var(--sage-pale);padding:calc(var(--s3) - 1px) calc(var(--s4) - 1px);}
+.choice[aria-pressed="true"] .tick{background:var(--olive);border-color:var(--olive);color:var(--ivory);}
+.choice[aria-pressed="true"] .tick svg{opacity:1;transform:scale(1);}
+.choice[aria-pressed="true"] .ctitle{color:var(--olive-ink);}
+.choice.stack{flex-direction:column;align-items:center;text-align:center;gap:var(--s2);padding:var(--s4) var(--s3);}
+.choice.stack .tick{position:absolute;top:8px;right:8px;width:22px;height:22px;}
+.swatch{width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(47,57,32,.3);flex:none;}
+
+/* ---------------------------------------------------------------- card --- */
+.card{background:var(--ivory);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:var(--s4);box-shadow:var(--shadow-1);}
+.well{background:var(--ivory-sunk);border-radius:var(--r-lg);padding:var(--s4);}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:var(--r-pill);
+  font-size:13px;font-weight:600;background:var(--sage-pale);color:var(--olive-ink);}
+.pill.good{background:var(--good-bg);color:var(--good);}
+.note-good{display:flex;gap:7px;align-items:center;font-size:13px;color:var(--good);}
+
+/* ------------------------------------------------------------- welcome -- */
+.hero{position:relative;text-align:center;padding:var(--s6) var(--s4) var(--s5);
+  background:var(--ivory);border-bottom:1px solid var(--line);}
+.hero::before{content:"";position:absolute;inset:0 0 auto;height:8px;
+  background-image:repeating-linear-gradient(90deg,var(--sage-mid) 0 10px,transparent 10px 20px);opacity:.5;}
+.hero .kicker{font-family:var(--serif);font-size:14px;font-weight:600;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--sage);}
+.hero .grown{font-family:var(--script);font-size:clamp(40px,12vw,54px);color:var(--olive);line-height:1.05;margin:2px 0 1px;}
+.hero .way{font-family:var(--serif);font-size:13px;font-weight:600;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--sage);}
+.hero .who{font-family:var(--serif);font-size:clamp(23px,6.4vw,29px);font-weight:700;color:var(--olive-ink);margin-top:var(--s4);}
+.duepill{display:inline-flex;align-items:baseline;gap:8px;margin-top:var(--s3);padding:9px 17px;
+  border:2px solid var(--olive);border-radius:var(--r-pill);background:var(--sage-pale);}
+.duepill b{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);}
+.duepill span{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--olive-ink);}
+.motifs{display:flex;justify-content:center;gap:var(--s5);margin-top:var(--s5);color:var(--sage);}
+.motifs svg{width:34px;height:auto;}
+.motifs svg:first-child{color:var(--carrot);}
+
+/* ---------------------------------------------------------------- date --- */
+.calhead{display:flex;align-items:center;justify-content:center;margin-bottom:var(--s3);}
+.calhead .mon{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--olive-ink);}
+.dow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-bottom:4px;}
+.dow span{text-align:center;font-size:12px;font-weight:600;color:var(--muted);}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;}
+.day{position:relative;min-width:0;min-height:46px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:1px;background:var(--ivory);
+  border:1.5px solid var(--line);border-radius:var(--r-sm);cursor:pointer;
+  font-size:16px;font-variant-numeric:tabular-nums;color:var(--olive-ink);
+  transition:background .12s var(--ease),border-color .12s var(--ease);}
+.day:hover{background:var(--ivory-sunk);}
+.day[disabled]{border-color:transparent;background:transparent;color:#A9B592;cursor:default;}
+.day[disabled] .x{position:absolute;width:15px;height:1.5px;background:#C8D1B4;transform:rotate(-20deg);}
+.day .tag{font-size:8.5px;font-weight:700;letter-spacing:.06em;line-height:1;}
+.day .mo{position:absolute;top:2px;left:0;right:0;font-size:7.5px;font-weight:700;
+  letter-spacing:.08em;color:var(--sage);line-height:1;}
+.day[aria-pressed="true"] .mo{color:var(--ivory);}
+.day.hasmo{padding-top:7px;}
+.day.due{border-color:var(--olive);border-width:2.5px;background:var(--sage-pale);font-weight:700;}
+.day.due .tag{color:var(--olive);}
+.day[aria-pressed="true"]{background:var(--olive);border-color:var(--olive);color:var(--ivory);font-weight:700;}
+.day[aria-pressed="true"] .tag{color:var(--ivory);}
+.day[aria-pressed="true"] .chk{position:absolute;top:3px;right:3px;width:12px;height:12px;}
+.callegend{display:flex;flex-wrap:wrap;gap:var(--s4);margin-top:var(--s3);font-size:12.5px;color:var(--muted);}
+.callegend span{display:inline-flex;align-items:center;gap:6px;}
+.lg{width:19px;height:19px;border-radius:5px;flex:none;display:grid;place-items:center;font-size:7.5px;font-weight:700;}
+.lg.due{border:2px solid var(--olive);background:var(--sage-pale);color:var(--olive);}
+.lg.sel{background:var(--olive);color:var(--ivory);}
+.picked{margin-top:var(--s3);font-size:15px;font-weight:600;color:var(--olive-ink);text-align:center;}
+
+/* ---------------------------------------------------------------- hour --- */
+.hours{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.hr{min-height:48px;border:1.5px solid var(--line-strong);border-radius:var(--r-md);background:var(--ivory);
+  font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--olive-ink);cursor:pointer;
+  transition:all .12s var(--ease);}
+.hr:hover{background:var(--ivory-sunk);}
+.hr[aria-pressed="true"]{background:var(--olive);border-color:var(--olive);color:var(--ivory);border-width:2.5px;}
+
+/* ------------------------------------------------- baby + measure rigs --- */
+.stage{position:relative;height:min(250px,32vh);min-height:0;display:grid;place-items:end center;overflow:hidden;}
+.stage.tallrig{height:min(330px,44vh);place-items:stretch;position:relative;}
+.baby{display:block;height:100%;width:100%;color:var(--sage);pointer-events:none;}
+
+.readout{text-align:center;}
+.readout .big{font-size:clamp(44px,13vw,58px);font-weight:700;color:var(--olive-ink);line-height:1;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em;}
+.readout .big u{text-decoration:none;font-size:.42em;font-weight:600;color:var(--muted);margin-left:4px;}
+.readout .alt{font-size:15px;color:var(--muted);margin-top:4px;font-variant-numeric:tabular-nums;}
+
+.stepper{display:flex;align-items:center;gap:var(--s3);margin-top:var(--s4);}
+input[type=range]{-webkit-appearance:none;appearance:none;background:transparent;margin:0;}
+.stepper input[type=range]{flex:1;min-width:0;height:44px;}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--sage-pale);}
+input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--sage-pale);}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:32px;height:32px;border-radius:50%;
+  background:var(--ivory);border:3px solid var(--olive);margin-top:-13px;cursor:grab;box-shadow:var(--shadow-2);}
+input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:var(--ivory);
+  border:3px solid var(--olive);cursor:grab;box-shadow:var(--shadow-2);}
+input[type=range]:active::-webkit-slider-thumb{cursor:grabbing;}
+.ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:2px;}
+.exact{display:flex;align-items:center;justify-content:center;gap:var(--s2);margin-top:var(--s3);
+  font-size:13.5px;color:var(--muted);}
+.exact input{width:88px;min-height:44px;text-align:center;border:1.5px solid var(--line-strong);
+  border-radius:var(--r-md);background:var(--ivory);font-size:16px;font-variant-numeric:tabular-nums;}
+.exact input:focus{border-color:var(--olive);outline:none;box-shadow:0 0 0 3px var(--sage-pale);}
+
+/* vertical rig for length */
+.tallrig{display:grid;grid-template-columns:54px 46px 1fr;gap:var(--s2);align-items:stretch;padding:9px 0;}
+.ruler{position:relative;overflow:visible;}
+.ruler i{position:absolute;right:0;height:1.5px;width:10px;background:var(--line-strong);}
+.ruler i.maj{width:19px;background:var(--sage-mid);}
+.ruler b{position:absolute;right:23px;transform:translateY(50%);font-size:12px;font-weight:600;
+  color:var(--muted);font-variant-numeric:tabular-nums;}
+.vtrack{position:relative;}
+.vtrack::before{content:"";position:absolute;left:50%;top:var(--btop,0px);height:var(--bh,100%);
+  width:6px;margin-left:-3px;background:var(--sage-pale);border-radius:3px;}
+.vtrack input[type=range]{position:absolute;left:50%;top:var(--bmid,50%);height:46px;
+  transform:translate(-50%,-50%) rotate(-90deg);width:var(--vlen,180px);}
+/* the stick the baby is measured against, and the guide at the current mark */
+.ruler::after{content:"";position:absolute;right:0;top:var(--btop,0);height:var(--bh,100%);width:2px;background:var(--line-strong);}
+.guide{position:absolute;left:54px;right:0;height:2px;background:var(--olive);opacity:.55;
+  transition:bottom .1s var(--ease);pointer-events:none;}
+.guide span{position:absolute;right:4px;top:-9px;font-size:11px;font-weight:700;color:var(--olive);
+  background:var(--ivory);padding:0 4px;}
+.vtrack input[type=range]::-webkit-slider-runnable-track{background:transparent;}
+.vtrack input[type=range]::-moz-range-track{background:transparent;}
+.babycol{position:relative;min-height:0;min-width:0;overflow:hidden;display:flex;align-items:flex-end;justify-content:center;}
+.baseline{position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--line-strong);}
+
+/* -------------------------------------------------------------- review -- */
+.rev{display:flex;flex-direction:column;gap:var(--s2);}
+.rev-row{display:flex;align-items:center;gap:var(--s3);padding:11px var(--s4);
+  background:var(--ivory);border:1px solid var(--line);border-radius:var(--r-md);}
+.rev-row .k{display:block;font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);}
+.rev-row .v{display:block;font-size:16.5px;font-weight:600;color:var(--olive-ink);margin-top:2px;overflow-wrap:anywhere;}
+.rev-row .grow{flex:1;min-width:0;}
+
+/* ---------------------------------------------------------------- done -- */
+.celebrate{text-align:center;padding:var(--s6) var(--s4);position:relative;overflow:hidden;}
+.celebrate::before{content:"";position:absolute;inset:0;
+  background-image:repeating-linear-gradient(90deg,var(--gingham) 0 20px,transparent 20px 40px),
+                   repeating-linear-gradient(0deg,var(--gingham) 0 20px,transparent 20px 40px);
+  opacity:.75;}
+.celebrate > *{position:relative;}
+.celebrate h2{font-family:var(--script);font-size:clamp(34px,10vw,44px);color:var(--olive);line-height:1.1;}
+.sumgrid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);}
+.sumcell{background:var(--ivory);border:1px solid var(--line);border-radius:var(--r-md);padding:var(--s3);}
+.sumcell .k{font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+.sumcell .v{font-size:16px;font-weight:600;color:var(--olive-ink);margin-top:2px;overflow-wrap:anywhere;}
+
+/* --------------------------------------------------------------- admin -- */
+.admgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--s3);}
+.admgrid label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:4px;}
+.admgrid input,.admgrid select{width:100%;min-height:44px;padding:0 10px;border:1.5px solid var(--line-strong);
+  border-radius:var(--r-sm);background:var(--ivory);font-size:15px;}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-md);}
+table{border-collapse:collapse;width:100%;font-size:14px;}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);white-space:nowrap;}
+th{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+
+@media (min-width:430px){ .hours{grid-template-columns:repeat(6,1fr);} }
+@media (max-width:359px){ .hr{font-size:13.5px;} }
+@media (max-width:359px){ .choices[data-cols="2"]{grid-template-columns:1fr;} .hours{grid-template-columns:repeat(3,1fr);} }
+</style>
+
+<div class="app">
+
+<!-- ========================= WELCOME ========================= -->
+<section id="s-welcome" class="scr on">
+  <div class="hero">
+    <div class="kicker">Locally</div>
+    <div class="grown">grown baby</div>
+    <div class="way">on the way!</div>
+    <h1 class="who">Baby Strachan</h1>
+    <div class="duepill"><b>Due</b><span>Thu 10 December 2026</span></div>
+    <div class="motifs" aria-hidden="true">
+      <svg viewBox="0 0 100 100" class="m-carrot" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M50 38c-7 0-13 4-13 9 0 9 7 30 13 38 6-8 13-29 13-38 0-5-6-9-13-9z"/><path d="M41 52h18M44 64h12"/><path d="M50 38V24M50 30c-5-6-12-8-17-6 1 6 7 11 13 11M50 30c5-7 12-9 17-7-1 6-7 12-13 12"/></svg>
+      <svg viewBox="0 0 100 100" class="m-onesie" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M36 30h28l12 9-7 11-5-3v26c0 4-3 7-7 7H43c-4 0-7-3-7-7V47l-5 3-7-11z"/><path d="M42 30c0 5 4 8 8 8s8-3 8-8"/><path d="M40 74c6 4 14 4 20 0"/></svg>
+      <svg viewBox="0 0 100 100" class="m-leaf" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M50 20c2 14 2 32 0 58"/><ellipse cx="38" cy="36" rx="10" ry="7" transform="rotate(-24 38 36)"/><ellipse cx="62" cy="45" rx="10" ry="7" transform="rotate(24 62 45)"/><ellipse cx="38" cy="56" rx="9" ry="6.5" transform="rotate(-24 38 56)"/></svg>
+      <svg viewBox="0 0 100 100" class="m-daisy" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M50 56v24"/><ellipse cx="50" cy="28" rx="5" ry="9"/><ellipse cx="50" cy="52" rx="5" ry="9"/><ellipse cx="38" cy="40" rx="9" ry="5"/><ellipse cx="62" cy="40" rx="9" ry="5"/><circle cx="50" cy="40" r="5.5"/></svg>
+    </div>
+  </div>
+  <div class="body">
+    <p class="lede">Nine quick guesses about Tegan and Josh's baby. It takes about a minute, and
+       you can change your answers any time before baby arrives.</p>
+    <div id="resume-box" hidden>
+      <div class="well">
+        <div class="note-good"><svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span id="resume-text">You have a draft saved on this device.</span></div>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+          <button class="btn btn-ghost" id="resume-go" type="button">Pick up where I left off</button>
+          <button class="btn btn-text" id="resume-clear" type="button">Start again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions"><button class="btn btn-primary" id="go-details" type="button">Start guessing</button></div>
+</section>
+
+<!-- ========================= DETAILS ========================= -->
+<section id="s-details" class="scr">
+  <div class="topbar"><span class="brand">Baby Strachan</span><span class="spacer"></span>
+    <button class="btn-icon" id="det-back" type="button" aria-label="Back to welcome">&#8592;</button></div>
+  <div class="body">
+    <h2 class="q">First, who's guessing?</h2>
+    <div class="field" id="f-name">
+      <label for="in-name">Your name</label>
+      <input id="in-name" type="text" autocomplete="name" autocapitalize="words"
+             placeholder="Jane Gardener" maxlength="60" enterkeyhint="next">
+      <div class="err" id="e-name" hidden></div>
+    </div>
+    <div class="field" id="f-mob">
+      <label for="in-mob">Mobile number</label>
+      <input id="in-mob" type="tel" inputmode="tel" autocomplete="tel"
+             placeholder="0412 345 678" maxlength="20" enterkeyhint="go">
+      <div class="help">Used only to tell guesses apart, so you can come back and change
+        yours. It is never shown on the results.</div>
+      <div class="err" id="e-mob" hidden></div>
+    </div>
+  </div>
+  <div class="actions"><button class="btn btn-primary" id="go-steps" type="button">Continue</button></div>
+</section>
+
+<!-- ========================= EXISTING ENTRY ========================= -->
+<section id="s-existing" class="scr">
+  <div class="topbar"><span class="brand">Baby Strachan</span><span class="spacer"></span>
+    <button class="btn-icon" id="ex-back" type="button" aria-label="Back">&#8592;</button></div>
+  <div class="body">
+    <h2 class="q" id="ex-title">You've already guessed</h2>
+    <p class="q-help" id="ex-sub"></p>
+    <div class="sumgrid" id="ex-sum"></div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-ghost" id="ex-keep" type="button">Keep it</button>
+    <button class="btn btn-primary" id="ex-edit" type="button">Change my guesses</button>
+  </div>
+</section>
+
+<!-- ========================= STEPS ========================= -->
+<section id="s-steps" class="scr">
+  <div class="topbar">
+    <span class="brand">Baby Strachan</span><span class="spacer"></span>
+    <span class="stepcount">Step <span id="st-n">1</span> of 9</span>
+  </div>
+  <div class="progress" id="prog" role="progressbar" aria-valuemin="1" aria-valuemax="9" aria-valuenow="1"
+       aria-label="Progress through the nine guesses"></div>
+  <div class="body">
+
+    <!-- 1 date -->
+    <div class="step" data-f="birthDate" hidden>
+      <h2 class="q">When will baby arrive?</h2>
+      <p class="q-help">Every day from 16 November to 20 December is here &mdash; no scrolling.</p>
+      <div class="card" style="margin-top:16px">
+        <div class="calhead"><span class="mon">16 Nov &ndash; 20 Dec 2026</span></div>
+        <div class="dow" aria-hidden="true"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+        <div class="grid" id="cal" role="group" aria-label="Choose the arrival date"></div>
+        <div class="callegend">
+          <span><i class="lg due">DUE</i> Due date</span>
+          <span><i class="lg sel">&#10003;</i> Your pick</span>
+        </div>
+      </div>
+      <p class="picked" id="date-out">No date picked yet</p>
+    </div>
+
+    <!-- 2 hour -->
+    <div class="step" data-f="birthHour" hidden>
+      <h2 class="q">What time of day?</h2>
+      <p class="q-help">Pick the hour. Close counts — you score on how near you are.</p>
+      <div class="card" style="margin-top:16px">
+        <div class="hours" id="hours" role="group" aria-label="Choose the hour"></div>
+      </div>
+      <p class="picked" id="hour-out">No time picked yet</p>
+    </div>
+
+    <!-- 3 weight -->
+    <div class="step" data-f="weightKg" hidden>
+      <h2 class="q">How heavy?</h2>
+      <div class="stage"><svg class="baby" id="baby-w" viewBox="0 0 130 170" preserveAspectRatio="xMidYMax meet" role="img"
+           aria-label="A drawing of a baby that changes with your guess"></svg></div>
+      <div class="readout">
+        <div class="big"><span id="w-kg">3.50</span><u>kg</u></div>
+        <div class="alt" id="w-lb">7 lb 11 oz</div>
+      </div>
+      <div class="stepper">
+        <button class="btn-icon" id="w-minus" type="button" aria-label="Lighter by 50 grams">&minus;</button>
+        <input type="range" id="w-range" min="1.5" max="6" step="0.01" value="3.5"
+               aria-label="Weight in kilograms" aria-describedby="w-kg">
+        <button class="btn-icon" id="w-plus" type="button" aria-label="Heavier by 50 grams">+</button>
+      </div>
+      <div class="ticks"><span>1.5 kg</span><span>6 kg</span></div>
+      <div class="exact"><label for="w-exact">Or type it</label>
+        <input id="w-exact" type="number" min="1.5" max="6" step="0.01" inputmode="decimal"> <span>kg</span></div>
+    </div>
+
+    <!-- 4 sex -->
+    <div class="step" data-f="sex" hidden>
+      <h2 class="q">Boy or girl?</h2>
+      <p class="q-help">Nobody knows yet — this is your hunch.</p>
+      <div class="choices" data-cols="2" id="sex" role="group" aria-label="Boy or girl" style="margin-top:16px">
+        <button class="choice stack" type="button" aria-pressed="false" data-v="Boy">
+          <span class="tick"></span><span class="ctext"><span class="ctitle">Boy</span></span></button>
+        <button class="choice stack" type="button" aria-pressed="false" data-v="Girl">
+          <span class="tick"></span><span class="ctext"><span class="ctitle">Girl</span></span></button>
+      </div>
+    </div>
+
+    <!-- 5 name -->
+    <div class="step" data-f="firstName" hidden>
+      <h2 class="q">What will baby be called?</h2>
+      <div class="field" style="margin-top:16px">
+        <label for="in-babyname">Your name guess</label>
+        <input id="in-babyname" type="text" placeholder="e.g. Olive, Arlo, Mary-Jane" maxlength="32"
+               autocapitalize="words" autocomplete="off" enterkeyhint="done">
+        <div class="help">First name only. Hyphens and apostrophes are fine.</div>
+      </div>
+    </div>
+
+    <!-- 6 length -->
+    <div class="step" data-f="length" hidden>
+      <h2 class="q">How long?</h2>
+      <div class="readout" style="margin-top:8px">
+        <div class="big"><span id="l-cm">50</span><u>cm</u></div>
+        <div class="alt" id="l-in">19.7 inches</div>
+      </div>
+      <div class="stage tallrig" style="margin-top:12px">
+        <div class="ruler" id="ruler" aria-hidden="true"></div>
+        <div class="vtrack"><input type="range" id="l-range" min="40" max="60" step="1" value="50"
+             aria-label="Length in centimetres" aria-describedby="l-cm"></div>
+        <i class="guide" id="l-guide" aria-hidden="true"></i><div class="babycol"><svg class="baby" id="baby-l" viewBox="0 0 130 170" preserveAspectRatio="xMidYMax meet" role="img"
+             aria-label="A drawing of a baby that grows with your guess"></svg><i class="baseline"></i></div>
+      </div>
+      <div class="stepper">
+        <button class="btn-icon" id="l-minus" type="button" aria-label="Shorter by one centimetre">&minus;</button>
+        <input type="number" id="l-exact" min="40" max="60" step="1" inputmode="numeric"
+               aria-label="Length in centimetres, typed" style="flex:1;min-height:44px;text-align:center;
+               border:1.5px solid var(--line-strong);border-radius:var(--r-md);background:var(--ivory);font-size:16px;">
+        <button class="btn-icon" id="l-plus" type="button" aria-label="Longer by one centimetre">+</button>
+      </div>
+    </div>
+
+    <!-- 7 hair -->
+    <div class="step" data-f="hair" hidden>
+      <h2 class="q">Hair or no hair?</h2>
+      <div class="choices" data-cols="2" id="hair" role="group" aria-label="Hair or no hair" style="margin-top:16px">
+        <button class="choice stack" type="button" aria-pressed="false" data-v="Hair">
+          <span class="tick"></span><svg class="baby" viewBox="0 0 130 170" preserveAspectRatio="xMidYMax meet" style="height:92px" data-preview="hair" aria-hidden="true"></svg>
+          <span class="ctext"><span class="ctitle">A full head</span></span></button>
+        <button class="choice stack" type="button" aria-pressed="false" data-v="No Hair">
+          <span class="tick"></span><svg class="baby" viewBox="0 0 130 170" preserveAspectRatio="xMidYMax meet" style="height:92px" data-preview="bald" aria-hidden="true"></svg>
+          <span class="ctext"><span class="ctitle">Smooth as an egg</span></span></button>
+      </div>
+    </div>
+
+    <!-- 8 eyes -->
+    <div class="step" data-f="eyes" hidden>
+      <h2 class="q">What colour eyes?</h2>
+      <div class="choices" id="eyes" role="group" aria-label="Eye colour" style="margin-top:16px"></div>
+    </div>
+
+    <!-- 9 labour -->
+    <div class="step" data-f="labour" hidden>
+      <h2 class="q">How long will labour take?</h2>
+      <p class="q-help">A guess for Tegan. Bands do not overlap.</p>
+      <div class="choices" id="labour" role="group" aria-label="Labour duration" style="margin-top:16px"></div>
+    </div>
+
+  </div>
+  <div class="actions">
+    <button class="btn-icon" id="st-back" type="button" aria-label="Previous question">&#8592;</button>
+    <button class="btn btn-primary" id="st-next" type="button">Continue</button>
+  </div>
+</section>
+
+<!-- ========================= REVIEW ========================= -->
+<section id="s-review" class="scr">
+  <div class="topbar"><span class="brand">Baby Strachan</span><span class="spacer"></span>
+    <button class="btn-icon" id="rev-back" type="button" aria-label="Back to the last question">&#8592;</button></div>
+  <div class="body">
+    <h2 class="q">Check your guesses</h2>
+    <p class="q-help">Change anything you like, then lock them in.</p>
+    <div class="rev" id="rev-list"></div>
+    <div class="err" id="rev-err" hidden></div>
+    <p class="note-good" id="draft-note" hidden>
+      <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Draft saved on this device. Not sent yet.</span></p>
+  </div>
+  <div class="actions"><button class="btn btn-primary" id="submit" type="button">Lock in my guesses</button></div>
+</section>
+
+<!-- ========================= DONE ========================= -->
+<section id="s-done" class="scr">
+  <div class="celebrate">
+    <svg class="baby" id="baby-done" viewBox="0 0 130 170" preserveAspectRatio="xMidYMax meet" style="height:150px;margin:0 auto 12px"
+         role="img" aria-label="Your predicted baby"></svg>
+    <h2 id="done-title">Guesses locked in!</h2>
+    <p class="lede" id="done-sub" style="margin-top:8px"></p>
+  </div>
+  <div class="body">
+    <div class="sumgrid" id="done-sum"></div>
+    <p class="q-help" id="done-foot"></p>
+  </div>
+  <div class="actions"><button class="btn btn-ghost" id="done-edit" type="button">Change my guesses</button></div>
+</section>
+
+<!-- ========================= ADMIN (#kitchen) ========================= -->
+<section id="s-kitchen" class="scr">
+  <div class="topbar"><span class="brand">The garden shed</span></div>
+  <div class="body">
+    <h2 class="q">Enter the actual results</h2>
+    <p class="q-help">Only you see this. Fill it in once baby arrives and every guess is scored.</p>
+    <div class="admgrid">
+      <div><label for="a-date">Birth date</label><input id="a-date" type="date" min="2026-11-01" max="2027-02-28"></div>
+      <div><label for="a-hour">Hour (0&ndash;23)</label><input id="a-hour" type="number" min="0" max="23" placeholder="14"></div>
+      <div><label for="a-weight">Weight (kg)</label><input id="a-weight" type="number" step="0.01" min="1" max="7" placeholder="3.52"></div>
+      <div><label for="a-length">Length (cm)</label><input id="a-length" type="number" min="35" max="65" step="0.5" placeholder="50"></div>
+      <div><label for="a-sex">Boy or girl</label><select id="a-sex"><option value="">&mdash;</option><option>Boy</option><option>Girl</option></select></div>
+      <div><label for="a-name">First name</label><input id="a-name" type="text" placeholder="Olive"></div>
+      <div><label for="a-hair">Hair</label><select id="a-hair"><option value="">&mdash;</option><option>Hair</option><option>No Hair</option></select></div>
+      <div><label for="a-eyes">Eyes</label><select id="a-eyes"><option value="">&mdash;</option><option>Blue</option><option>Grey</option><option>Green</option><option>Hazel</option><option>Brown</option></select></div>
+      <div><label for="a-labour">Labour</label><select id="a-labour"><option value="">&mdash;</option></select></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px">
+      <button class="btn btn-ghost" id="a-save" type="button">Save &amp; score</button>
+      <button class="btn btn-ghost" id="a-reload" type="button">Reload</button>
+      <span class="q-help" id="a-status">Loading&hellip;</span>
+    </div>
+    <div class="tablewrap" style="margin-top:16px"><table id="a-table"><thead></thead><tbody></tbody></table></div>
+  </div>
+</section>
+
+</div>
+<script>
+/* ============================================================================
+   CONFIG — the only block you edit
+   ========================================================================== */
+var CONFIG = {
+  adminEmail: "strachan.josh@gmail.com",
+  notifyEndpoint: "https://script.google.com/macros/s/AKfycbyBp7Wfv1fqMxEzTiGJUpCBNrtHFR430uezQQ2nUPGkUkSKtUcuc78TSMh8DpSRdKLPTQ/exec",
+  game: "strachan",
+  dueDate: "2026-12-10",
+  windowOpen: "2026-11-16",
+  windowClose: "2026-12-20",
+  babyName: "Baby Strachan",
+  points: { date:30, hour:20, weight:25, sex:15, name:25, length:10, hair:10, eyes:10, labour:10 }
+};
+// A published Claude artifact cannot reach an outside host, so fall through to
+// the shared database there instead of stalling on a fetch that cannot succeed.
+if(window.claude && window.claude.use) CONFIG.notifyEndpoint = "";
+
+var EYES = [
+  { v:"Blue",  hex:"#6B8CAE", sub:"like a clear morning" },
+  { v:"Grey",  hex:"#8D938C", sub:"soft and changeable" },
+  { v:"Green", hex:"#6E8A5A", sub:"like the garden" },
+  { v:"Hazel", hex:"#A9803F", sub:"flecked with gold" },
+  { v:"Brown", hex:"#6B4A2F", sub:"deep and warm" }
+];
+// Bands are inclusive of both ends and never overlap.
+var LABOUR = [
+  { v:"Under 8 hrs", sub:"A quick one" },
+  { v:"8–15 hrs", sub:"A long day" },
+  { v:"16–23 hrs", sub:"The full night" },
+  { v:"24+ hrs", sub:"The marathon" }
+];
+
+var $  = function(s,r){ return (r||document).querySelector(s); };
+var $$ = function(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+var DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+var LS_DRAFT = "strachan:draft", LS_PREFIX = "strachan:entry:", LS_ACTUAL = "strachan:actual";
+
+/* ----------------------------------------------------------------- state */
+var P = { name:"", mobile:"", birthDate:"", birthHour:null, weightKg:3.5,
+          sex:"", firstName:"", length:"50 cm", hair:"", eyes:"", labour:"" };
+var at = 0, returnToReview = false, replacing = false, lastExisting = null, submitted = false;
+
+var STEPS = [
+  { f:"birthDate", label:"Arrival date" },
+  { f:"birthHour", label:"Time of day" },
+  { f:"weightKg",  label:"Weight" },
+  { f:"sex",       label:"Boy or girl" },
+  { f:"firstName", label:"Name" },
+  { f:"length",    label:"Length" },
+  { f:"hair",      label:"Hair" },
+  { f:"eyes",      label:"Eye colour" },
+  { f:"labour",    label:"Labour" }
+];
+
+/* --------------------------------------------------------------- helpers */
+function auMobile(raw){
+  var d = String(raw || "").replace(/[^\d+]/g, "");
+  if(d.indexOf("+61") === 0) d = "0" + d.slice(3);
+  else if(d.indexOf("61") === 0 && d.length === 11) d = "0" + d.slice(2);
+  d = d.replace(/\D/g, "");
+  if(d.length === 9 && d.charAt(0) === "4") d = "0" + d;
+  return /^04\d{8}$/.test(d) ? d : null;
+}
+function prettyMobile(m){ return m ? m.slice(0,4) + " " + m.slice(4,7) + " " + m.slice(7) : ""; }
+function firstNameOf(n){ return ((n || "").trim().split(/\s+/)[0]) || ""; }
+function kgToLbOz(kg){
+  var t = kg * 2.20462262, lb = Math.floor(t), oz = Math.round((t - lb) * 16);
+  if(oz === 16){ lb += 1; oz = 0; }
+  return lb + " lb " + oz + " oz";
+}
+function iso(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function dOf(s){ var p=String(s).split("-").map(Number); return new Date(p[0],p[1]-1,p[2]); }
+function fmtDate(s){ if(!s) return ""; var x=dOf(s); return DOW[x.getDay()]+" "+x.getDate()+" "+MONTHS[x.getMonth()]; }
+function fmtHour(h){ if(h===null||h===undefined||h==="") return ""; return ((h%12)||12)+" "+(h<12?"am":"pm"); }
+function fmtWhen(isoStr){
+  if(!isoStr) return "";
+  var t = new Date(isoStr); if(isNaN(t)) return "";
+  return t.toLocaleString("en-AU",{weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit"});
+}
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+
+/* ============================================================================
+   THE BABY — one character, shared by weight, length, hair, eyes and the summary.
+   Head size is fixed so the face never distorts; length moves the body and legs,
+   weight changes the tummy, cheeks and limbs.
+   ========================================================================== */
+var BB = { VB_H:170, VB_W:130, BASE:164, FULL_CM:60, FULL_H:156 };
+/** Where the crown of the head sits, as a fraction up the drawing box. */
+function headFrac(cm){
+  var total = (Math.min(BB.FULL_CM, Math.max(0, cm)) / BB.FULL_CM) * BB.FULL_H;
+  return (BB.VB_H - (BB.BASE - total)) / BB.VB_H;
+}
+/* A baby on its back, seen from above: crown at the top, feet on the baseline,
+   arms a little out, knees gently bent. Weight changes widths, length changes
+   the body, and the head barely moves either way so the face stays still. */
+var PAL = { skin:"#F6DCC6", skinLt:"#FFF1E3", skinSh:"#EBC4A6", blush:"#E3A08F",
+            suit:"#A8B881", suitLt:"#C6D2A8", suitSh:"#90A169",
+            outline:"#7A6A48", hair:"#9A7B55", eye:"#3B3226" };
+var babyUid = 0;
+function babySVG(o){
+  o = o || {};
+  var kg   = Math.min(6, Math.max(1.5, o.weightKg == null ? 3.5 : o.weightKg));
+  var cm   = Math.min(60, Math.max(40, o.lengthCm == null ? 50 : o.lengthCm));
+  var hair = o.hair === "Hair";
+  var iris = o.iris || "#6B8CAE";
+  var fat  = (kg - 1.5) / 4.5;
+  var n    = function(v){ return Math.round(v * 100) / 100; };
+  var uid  = "b" + (++babyUid);                   // gradients must not collide
+
+  var total = (cm / BB.FULL_CM) * BB.FULL_H;
+  // the head keeps close to a third of the figure, easing off as baby grows
+  var headShare = 0.305 * Math.pow(50 / cm, 0.34);
+  var hR  = total * headShare / 2;
+  var rest = total - hR * 2;
+  var torso = rest * 0.54, legs = rest * 0.46;
+
+  var cx = BB.VB_W / 2;
+  var crown = BB.BASE - total, hCy = crown + hR;
+  var shY = hCy + hR * 1.12, hipY = shY + torso;      // clear of the chin
+
+  var tummy = hR * (1.08 + fat * 0.46);
+  var shoul = hR * (0.92 + fat * 0.26);
+  var armW  = hR * (0.30 + fat * 0.14);
+  var legW  = hR * (0.38 + fat * 0.17);
+  var blush = hR * (0.20 + fat * 0.09);
+  var eyeR  = hR * 0.105, eyeY = hCy + hR * 0.06, eyeX = hR * 0.38;
+
+  var p = [];
+  p.push('<defs>' +
+    '<radialGradient id="s' + uid + '" cx="38%" cy="30%" r="80%">' +
+      '<stop offset="0%" stop-color="' + PAL.skinLt + '"/><stop offset="60%" stop-color="' + PAL.skin + '"/>' +
+      '<stop offset="100%" stop-color="' + PAL.skinSh + '"/></radialGradient>' +
+    '<radialGradient id="t' + uid + '" cx="34%" cy="24%" r="86%">' +
+      '<stop offset="0%" stop-color="' + PAL.suitLt + '"/><stop offset="55%" stop-color="' + PAL.suit + '"/>' +
+      '<stop offset="100%" stop-color="' + PAL.suitSh + '"/></radialGradient></defs>');
+
+  // legs: out at the knee, feet turned in to the baseline
+  var kneeY = hipY + legs * 0.52, footY = BB.BASE - legW * 0.55;
+  [-1, 1].forEach(function(d){
+    var footX = cx + d * (tummy * 0.62 + hR * 0.18);
+    p.push('<path fill="none" stroke="' + PAL.skin + '" stroke-width="' + n(legW) + '" stroke-linecap="round" d="M' +
+      n(cx + d * tummy * 0.42) + ' ' + n(hipY - legW * 0.25) + ' Q' +
+      n(cx + d * (tummy + hR * 0.30)) + ' ' + n(kneeY) + ' ' +
+      n(footX) + ' ' + n(footY) + '"/>');
+    p.push('<ellipse fill="' + PAL.skin + '" stroke="' + PAL.outline + '" stroke-width="1.4" cx="' + n(footX) + '" cy="' + n(footY + legW * 0.16) +
+      '" rx="' + n(legW * 0.68) + '" ry="' + n(legW * 0.52) + '"/>');
+  });
+  // arms: slightly out, elbows soft, mitten hands
+  var elbowY = shY + torso * 0.34, handY = shY + torso * 0.58;
+  [-1, 1].forEach(function(d){
+    p.push('<path fill="none" stroke="' + PAL.skin + '" stroke-width="' + n(armW) + '" stroke-linecap="round" d="M' +
+      n(cx + d * shoul * 0.88) + ' ' + n(shY + torso * 0.10) + ' Q' +
+      n(cx + d * (tummy + hR * 0.52)) + ' ' + n(elbowY) + ' ' +
+      n(cx + d * (tummy + hR * 0.30)) + ' ' + n(handY) + '"/>');
+    p.push('<circle fill="' + PAL.skin + '" stroke="' + PAL.outline + '" stroke-width="1.4" cx="' + n(cx + d * (tummy + hR * 0.30)) + '" cy="' + n(handY) +
+      '" r="' + n(armW * 0.62) + '"/>');
+  });
+  // bodysuit
+  p.push('<path fill="url(#t' + uid + ')" stroke="' + PAL.outline + '" stroke-width="1.5" d="M' + n(cx - shoul) + ' ' + n(shY) +
+    ' C' + n(cx - tummy) + ' ' + n(shY + torso * 0.34) + ' ' + n(cx - tummy) + ' ' + n(hipY - torso * 0.22) + ' ' +
+    n(cx - tummy * 0.74) + ' ' + n(hipY) +
+    ' Q' + n(cx) + ' ' + n(hipY + torso * 0.14) + ' ' + n(cx + tummy * 0.74) + ' ' + n(hipY) +
+    ' C' + n(cx + tummy) + ' ' + n(hipY - torso * 0.22) + ' ' + n(cx + tummy) + ' ' + n(shY + torso * 0.34) + ' ' +
+    n(cx + shoul) + ' ' + n(shY) +
+    ' Q' + n(cx) + ' ' + n(shY - hR * 0.16) + ' ' + n(cx - shoul) + ' ' + n(shY) + ' Z"/>');
+  // a small leaf on the chest
+  var lx = cx, ly = shY + torso * 0.42, lS = hR * 0.40;
+  p.push('<g opacity="1"><path fill="none" stroke="' + '#E7EDD6' + '" stroke-linecap="round" stroke-width="' + n(lS * 0.22) +
+    '" d="M' + n(lx) + ' ' + n(ly + lS) + ' V' + n(ly - lS * 0.5) + '"/>' +
+    '<path fill="#E7EDD6" stroke="none" d="M' + n(lx) + ' ' + n(ly - lS * 0.45) +
+      ' q' + n(-lS * 0.92) + ' ' + n(lS * 0.12) + ' ' + n(-lS * 0.06) + ' ' + n(lS * 0.86) +
+      ' q' + n(lS * 0.86) + ' ' + n(-lS * 0.18) + ' ' + n(lS * 0.06) + ' ' + n(-lS * 0.86) + '"/>' +
+    '<path fill="#E7EDD6" stroke="none" d="M' + n(lx) + ' ' + n(ly - lS * 0.1) +
+      ' q' + n(lS * 0.92) + ' ' + n(lS * 0.12) + ' ' + n(lS * 0.06) + ' ' + n(lS * 0.86) +
+      ' q' + n(-lS * 0.86) + ' ' + n(-lS * 0.18) + ' ' + n(-lS * 0.06) + ' ' + n(-lS * 0.86) + '"/></g>');
+  // ears, then head
+  [-1, 1].forEach(function(d){
+    p.push('<ellipse fill="' + PAL.skin + '" stroke="' + PAL.outline + '" stroke-width="1.4" cx="' + n(cx + d * hR * 0.97) + '" cy="' + n(hCy + hR * 0.12) +
+      '" rx="' + n(hR * 0.17) + '" ry="' + n(hR * 0.23) + '"/>');
+  });
+  p.push('<circle fill="url(#s' + uid + ')" stroke="' + PAL.outline + '" stroke-width="1.5" cx="' + n(cx) + '" cy="' + n(hCy) + '" r="' + n(hR) + '"/>');
+  p.push('<ellipse fill="' + PAL.blush + '" opacity="' + n(0.3 + fat * 0.26) + '" cx="' + n(cx - hR * 0.56) + '" cy="' + n(hCy + hR * 0.34) + '" rx="' + n(blush) + '" ry="' + n(blush * 0.76) + '"/>');
+  p.push('<ellipse fill="' + PAL.blush + '" opacity="' + n(0.3 + fat * 0.26) + '" cx="' + n(cx + hR * 0.56) + '" cy="' + n(hCy + hR * 0.34) + '" rx="' + n(blush) + '" ry="' + n(blush * 0.76) + '"/>');
+  [-1, 1].forEach(function(d){
+    p.push('<circle fill="' + PAL.eye + '" cx="' + n(cx + d * eyeX) + '" cy="' + n(eyeY) + '" r="' + n(eyeR) + '"/>');
+    p.push('<circle cx="' + n(cx + d * eyeX) + '" cy="' + n(eyeY + eyeR * 0.1) + '" r="' + n(eyeR * 0.52) + '" fill="' + iris + '" stroke="none" opacity=".9"/>');
+  });
+  p.push('<path fill="none" stroke="' + PAL.outline + '" stroke-linecap="round" stroke-width="1.3" d="M' + n(cx - hR * 0.07) + ' ' + n(hCy + hR * 0.3) + ' q' + n(hR * 0.08) + ' ' + n(hR * 0.08) + ' ' + n(hR * 0.14) + ' 0"/>');
+  if(hair){
+    p.push('<g fill="none" stroke="' + PAL.hair + '" stroke-width="' + n(Math.max(1.4, hR * 0.1)) + '" stroke-linecap="round">' +
+      '<path d="M' + n(cx - hR * 0.46) + ' ' + n(hCy - hR * 0.84) + ' q' + n(hR * 0.1) + ' ' + n(-hR * 0.42) + ' ' + n(hR * 0.42) + ' ' + n(-hR * 0.24) + '"/>' +
+      '<path d="M' + n(cx - hR * 0.1) + ' ' + n(hCy - hR * 0.99) + ' q' + n(hR * 0.16) + ' ' + n(-hR * 0.4) + ' ' + n(hR * 0.44) + ' ' + n(-hR * 0.12) + '"/>' +
+      '<path d="M' + n(cx + hR * 0.3) + ' ' + n(hCy - hR * 0.94) + ' q' + n(hR * 0.2) + ' ' + n(-hR * 0.3) + ' ' + n(hR * 0.36) + ' ' + n(-hR * 0.02) + '"/>' +
+      '<path d="M' + n(cx - hR * 0.72) + ' ' + n(hCy - hR * 0.6) + ' q' + n(hR * 0.02) + ' ' + n(-hR * 0.3) + ' ' + n(hR * 0.26) + ' ' + n(-hR * 0.26) + '"/></g>');
+  }
+  p.push('<path fill="none" stroke="' + PAL.outline + '" stroke-linecap="round" stroke-width="1.5" d="M' + n(cx - hR * 0.2) + ' ' + n(hCy + hR * 0.56) + ' q' + n(hR * 0.2) + ' ' + n(hR * 0.17) + ' ' + n(hR * 0.4) + ' 0"/>');
+  return p.join("");
+}
+function paintBaby(el, extra){
+  if(!el) return;
+  var o = { weightKg:P.weightKg, lengthCm:parseFloat(P.length) || 50,
+            hair:P.hair, iris:(EYES.filter(function(e){ return e.v===P.eyes; })[0]||{}).hex };
+  if(extra) for(var k in extra) o[k] = extra[k];
+  el.innerHTML = babySVG(o);
+}
+function paintAllBabies(){
+  paintBaby($("#baby-w")); paintBaby($("#baby-l")); paintBaby($("#baby-done"));
+  var hp = $('[data-preview="hair"]'), bp = $('[data-preview="bald"]');
+  if(hp) paintBaby(hp, { hair:"Hair" });
+  if(bp) paintBaby(bp, { hair:"No Hair" });
+}
+
+/* ============================================================================
+   STORAGE — unchanged in shape: endpoint first, then the artifact database,
+   then this browser. Only the endpoint can be shared between guests.
+   ========================================================================== */
+var mem = {};
+function lsGet(k){ try{ var v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return mem[k]||null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){ mem[k]=v; } }
+function lsDel(k){ try{ localStorage.removeItem(k); }catch(e){ delete mem[k]; } }
+
+var dbReady = (window.claude && window.claude.use) ? window.claude.use("db").catch(function(){ return null; })
+                                                   : Promise.resolve(null);
+async function postEndpoint(body){
+  if(!CONFIG.notifyEndpoint) return null;
+  // text/plain keeps this a simple cross-origin request; an application/json
+  // content type would trigger a preflight Apps Script never answers.
+  var res = await fetch(CONFIG.notifyEndpoint, {
+    method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify(body) });
+  if(!res.ok) throw new Error("endpoint " + res.status);
+  try{ return await res.json(); }catch(e){ return {}; }
+}
+var Store = {
+  async findEntry(mobile){
+    if(CONFIG.notifyEndpoint){
+      try{
+        var r = await fetch(CONFIG.notifyEndpoint + "?action=check&game=" + CONFIG.game +
+                            "&mobile=" + encodeURIComponent(mobile));
+        if(r.ok){ var j = await r.json(); if(j && j.exists) return j.entry; if(j && j.ok) return null; }
+      }catch(e){}
+    }
+    var db = await dbReady;
+    if(db){ try{ var s = await db.doc("strachan/" + mobile).get(); if(s.exists) return s.data(); }catch(e){} }
+    return lsGet(LS_PREFIX + mobile);
+  },
+  async saveEntry(rec, replace){
+    lsSet(LS_PREFIX + rec.mobile, rec);
+    var saved = false, updated = false;
+    if(CONFIG.notifyEndpoint){
+      try{
+        var r = await postEndpoint({ type:"entry", game:CONFIG.game, replace:!!replace,
+                                     record:rec, email:emailPayload(rec, replace) });
+        if(r && r.duplicate) return { duplicate:true, entry:r.entry };
+        saved = true; updated = !!(r && r.updated);
+      }catch(e){}
+    }
+    if(!saved){
+      var db = await dbReady;
+      if(db){ try{ await db.doc("strachan/" + rec.mobile).set(rec); saved = true; }catch(e){} }
+    }
+    // A save that never left the device must not be reported as success.
+    return { duplicate:false, saved:saved, updated:updated,
+             unsaved: !!CONFIG.notifyEndpoint && !saved };
+  },
+  async allEntries(){
+    if(CONFIG.notifyEndpoint){
+      try{ var r = await fetch(CONFIG.notifyEndpoint + "?action=list&game=" + CONFIG.game);
+           if(r.ok){ var j = await r.json(); if(j && j.entries) return j.entries; } }catch(e){}
+    }
+    var db = await dbReady;
+    if(db){ try{ var s = await db.collection("strachan").get();
+                 if(!s.empty) return s.docs.map(function(d){ return d.data(); }); }catch(e){} }
+    var out = [];
+    try{ for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i);
+      if(k && k.indexOf(LS_PREFIX)===0){ var v=lsGet(k); if(v) out.push(v); } } }catch(e){}
+    return out;
+  },
+  async getActual(){
+    var db = await dbReady;
+    if(db){ try{ var s = await db.doc("results/strachan").get(); if(s.exists) return s.data(); }catch(e){} }
+    return lsGet(LS_ACTUAL);
+  },
+  async setActual(a){
+    lsSet(LS_ACTUAL, a);
+    var db = await dbReady;
+    if(db){ try{ await db.doc("results/strachan").set(a); }catch(e){} }
+  }
+};
+function emailPayload(r, isUpdate){
+  var lines = [
+    r.name + (isUpdate ? " has UPDATED their " : " has locked in their ") + CONFIG.babyName + " guesses!",
+    "",
+    "1. Arrival date .......... " + fmtDate(r.birthDate),
+    "2. Arrival hour .......... " + fmtHour(r.birthHour),
+    "3. Weight ................ " + Number(r.weightKg).toFixed(2) + " kg (" + kgToLbOz(Number(r.weightKg)) + ")",
+    "4. Boy or girl ........... " + r.sex,
+    "5. Name .................. " + r.firstName,
+    "6. Length ................ " + r.length,
+    "7. Hair .................. " + r.hair,
+    "8. Eye colour ............ " + r.eyes,
+    "9. Labour ................ " + r.labour,
+    "",
+    "Mobile: " + prettyMobile(r.mobile),
+    "Submitted: " + new Date(r.submittedAt).toLocaleString("en-AU")
+  ];
+  if(isUpdate && r.updatedAt) lines.push("Updated:   " + new Date(r.updatedAt).toLocaleString("en-AU"));
+  return { to: CONFIG.adminEmail,
+           subject: (isUpdate ? "Updated " : "New ") + CONFIG.babyName + " Prediction — " + r.name,
+           text: lines.join("\n") };
+}
+
+/* ----------------------------------------------------------------- draft */
+function saveDraft(){
+  if(submitted) return;
+  lsSet(LS_DRAFT, { P:P, at:at, savedAt:new Date().toISOString() });
+  var n = $("#draft-note"); if(n) n.hidden = false;
+}
+function clearDraft(){ lsDel(LS_DRAFT); }
+
+/* ---------------------------------------------------------------- screens */
+var SCREENS = ["welcome","details","existing","steps","review","done","kitchen"];
+function show(name){
+  SCREENS.forEach(function(s){ $("#s-" + s).classList.toggle("on", s === name); });
+  var b = $("#s-" + name + " .body"); if(b) b.scrollTop = 0;
+  window.scrollTo(0,0);
+}
+
+/* ------------------------------------------------------------ validation */
+function answered(i){
+  var f = STEPS[i].f;
+  if(f === "weightKg" || f === "length") return true;     // both carry a starting value
+  if(f === "birthHour") return P.birthHour !== null;
+  return !!P[f];
+}
+function firstGap(){ for(var i=0;i<STEPS.length;i++) if(!answered(i)) return i; return -1; }
+
+/* ============================================================================
+   CONTROLS
+   ========================================================================== */
+/* ---- 1 date: a month at a time, with the due date called out ------------ */
+function buildCal(){
+  var grid = $("#cal"); grid.innerHTML = "";
+  var cur = dOf(CONFIG.windowOpen), last = dOf(CONFIG.windowClose);
+  // The range is deliberately a whole number of Monday-start weeks, so the
+  // block is solid: no leading or trailing blanks, no month to page through.
+  while(cur <= last){
+    var key = iso(cur), d = cur.getDate(), firstOfMonth = d === 1;
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "day" + (key === CONFIG.dueDate ? " due" : "") + (firstOfMonth ? " hasmo" : "");
+    b.dataset.v = key;
+    b.setAttribute("aria-pressed", String(key === P.birthDate));
+    b.setAttribute("aria-label", fmtDate(key) + (key === CONFIG.dueDate ? ", the due date" : ""));
+    b.innerHTML =
+      (firstOfMonth ? '<span class="mo">' + MONTHS[cur.getMonth()].slice(0,3).toUpperCase() + '</span>' : "") +
+      '<span>' + d + '</span>' +
+      (key === CONFIG.dueDate ? '<span class="tag">DUE</span>' : "") +
+      (key === P.birthDate ? '<svg class="chk" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>' : "");
+    b.addEventListener("click", function(){
+      P.birthDate = this.dataset.v;
+      buildCal(); paintPicked(); saveDraft(); refreshNext();
+    });
+    grid.appendChild(b);
+    cur.setDate(cur.getDate() + 1);
+  }
+}
+function paintPicked(){
+  $("#date-out").textContent = P.birthDate
+    ? fmtDate(P.birthDate) + (P.birthDate === CONFIG.dueDate ? "  \u00b7  right on the due date" : "")
+    : "No date picked yet";
+}
+
+/* ---- 2 hour: AM/PM then a 12-hour grid ---------------------------------- */
+function buildHours(){
+  var wrap = $("#hours"); wrap.innerHTML = "";
+  for(var h = 0; h < 24; h++){
+    var label = ((h % 12) || 12) + (h < 12 ? "am" : "pm");
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "hr"; b.dataset.h = String(h);
+    b.textContent = label;
+    b.setAttribute("aria-pressed", String(P.birthHour === h));
+    b.setAttribute("aria-label", h === 0 ? "midnight" : h === 12 ? "midday" : label.replace(/(am|pm)/," $1"));
+    b.addEventListener("click", function(){
+      P.birthHour = Number(this.dataset.h);
+      buildHours(); paintHour(); saveDraft(); refreshNext();
+    });
+    wrap.appendChild(b);
+  }
+}
+function paintHour(){
+  $("#hour-out").textContent = P.birthHour === null ? "No time picked yet"
+    : "Baby arrives around " + (P.birthHour === 0 ? "midnight" : P.birthHour === 12 ? "midday" : fmtHour(P.birthHour));
+}
+
+/* ---- 3 weight ----------------------------------------------------------- */
+var wRange = $("#w-range"), wExact = $("#w-exact");
+function setWeight(kg, from){
+  kg = Math.min(6, Math.max(1.5, Math.round(kg * 100) / 100));
+  P.weightKg = kg;
+  $("#w-kg").textContent = kg.toFixed(2);
+  $("#w-lb").textContent = kgToLbOz(kg);
+  if(from !== "range") wRange.value = kg;
+  if(from !== "exact") wExact.value = kg.toFixed(2);
+  paintBaby($("#baby-w"));
+  saveDraft();
+}
+wRange.addEventListener("input", function(){ setWeight(Number(this.value), "range"); });
+wExact.addEventListener("change", function(){ setWeight(Number(this.value) || 3.5, "exact"); });
+$("#w-minus").addEventListener("click", function(){ setWeight(P.weightKg - 0.05); });
+$("#w-plus").addEventListener("click",  function(){ setWeight(P.weightKg + 0.05); });
+
+/* ---- 6 length: a vertical scale the baby grows up ----------------------- */
+var lRange = $("#l-range"), lExact = $("#l-exact");
+function setLength(cm, from){
+  cm = Math.min(60, Math.max(40, Math.round(cm)));
+  P.length = cm + " cm";
+  $("#l-cm").textContent = cm;
+  $("#l-in").textContent = (cm / 2.54).toFixed(1) + " inches";
+  if(from !== "range") lRange.value = cm;
+  if(from !== "exact") lExact.value = cm;
+  paintBaby($("#baby-l"));
+  paintGuide();
+  saveDraft();
+}
+lRange.addEventListener("input", function(){ setLength(Number(this.value), "range"); });
+lExact.addEventListener("change", function(){ setLength(Number(this.value) || 50, "exact"); });
+$("#l-minus").addEventListener("click", function(){ setLength((parseFloat(P.length)||50) - 1); });
+$("#l-plus").addEventListener("click",  function(){ setLength((parseFloat(P.length)||50) + 1); });
+(function ruler(){
+  var r = $("#ruler");
+  for(var cm = 40; cm <= 60; cm += 1){
+    var pos = headFrac(cm) * 100, maj = cm % 5 === 0;
+    var i = document.createElement("i");
+    i.style.bottom = pos + "%"; if(maj) i.className = "maj";
+    r.appendChild(i);
+    if(maj){ var b = document.createElement("b"); b.style.bottom = pos + "%"; b.textContent = cm; r.appendChild(b); }
+  }
+})();
+/** Lines the slider travel, the track and the guide up with the 40-60 band. */
+function sizeVertical(){
+  var t = $(".vtrack"); if(!t) return;
+  var H = t.getBoundingClientRect().height;
+  var topFrac = 1 - headFrac(60), botFrac = 1 - headFrac(40);
+  var btop = topFrac * H, bh = (botFrac - topFrac) * H;
+  t.style.setProperty("--vlen", Math.round(bh) + "px");
+  t.style.setProperty("--bmid", Math.round(btop + bh / 2) + "px");
+  t.style.setProperty("--btop", Math.round(btop) + "px");
+  t.style.setProperty("--bh", Math.round(bh) + "px");
+  var r = $("#ruler");
+  if(r){ r.style.setProperty("--btop", Math.round(btop) + "px"); r.style.setProperty("--bh", Math.round(bh) + "px"); }
+  paintGuide();
+}
+function paintGuide(){
+  var g = $("#l-guide"), stage = $(".tallrig");
+  if(!g || !stage) return;
+  var H = stage.getBoundingClientRect().height - 18;      // minus the stage padding
+  var cm = parseFloat(P.length) || 50;
+  g.style.bottom = Math.round(headFrac(cm) * H + 9) + "px";
+  g.innerHTML = '<span>' + cm + ' cm</span>';
+}
+window.addEventListener("resize", sizeVertical);
+
+/* ---- 4,7 simple choice groups ------------------------------------------ */
+var TICK = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+$$(".tick").forEach(function(t){ t.innerHTML = TICK; });
+function wireGroup(sel, field, after){
+  $$(sel + " .choice").forEach(function(b){
+    b.addEventListener("click", function(){
+      $$(sel + " .choice").forEach(function(x){ x.setAttribute("aria-pressed", String(x === b)); });
+      P[field] = b.dataset.v;
+      if(after) after();
+      saveDraft(); refreshNext();
+    });
+  });
+}
+wireGroup("#sex","sex");
+wireGroup("#hair","hair", paintAllBabies);
+
+/* ---- 5 name ------------------------------------------------------------- */
+$("#in-babyname").addEventListener("input", function(){
+  P.firstName = this.value.replace(/[^\p{L}\p{M}'\- ]/gu, "").trimStart();
+  if(this.value !== P.firstName) this.value = P.firstName;
+  saveDraft(); refreshNext();
+});
+
+/* ---- 8 eyes, 9 labour: built from data --------------------------------- */
+(function buildEyes(){
+  var wrap = $("#eyes");
+  EYES.forEach(function(e){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "choice"; b.dataset.v = e.v;
+    b.setAttribute("aria-pressed","false");
+    b.innerHTML = '<span class="swatch" style="background:'+e.hex+'"></span>' +
+      '<span class="ctext"><span class="ctitle">'+e.v+'</span><span class="csub">'+e.sub+'</span></span>' +
+      '<span class="tick">'+TICK+'</span>';
+    wrap.appendChild(b);
+  });
+  wireGroup("#eyes","eyes", paintAllBabies);
+})();
+(function buildLabour(){
+  var wrap = $("#labour"), sel = $("#a-labour");
+  LABOUR.forEach(function(l){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "choice"; b.dataset.v = l.v;
+    b.setAttribute("aria-pressed","false");
+    b.innerHTML = '<span class="ctext"><span class="ctitle">'+l.v+'</span><span class="csub">'+l.sub+'</span></span>' +
+      '<span class="tick">'+TICK+'</span>';
+    wrap.appendChild(b);
+    var o = document.createElement("option"); o.textContent = l.v; sel.appendChild(o);
+  });
+  wireGroup("#labour","labour");
+})();
+
+/* ============================================================================
+   FLOW  welcome -> details -> steps -> review -> done
+   Nothing advances on its own: every step waits for Continue.
+   ========================================================================== */
+var stepEls = $$("#s-steps .step");
+(function buildProgress(){
+  var p = $("#prog");
+  for(var i=0;i<STEPS.length;i++) p.appendChild(document.createElement("i"));
+})();
+
+function refreshNext(){
+  var ok = answered(at);
+  var n = $("#st-next");
+  n.disabled = !ok;
+  n.textContent = returnToReview ? "Done" : (at === STEPS.length - 1 ? "Review my guesses" : "Continue");
+}
+function paintStep(){
+  stepEls.forEach(function(el,i){ el.hidden = (i !== at); });
+  $("#st-n").textContent = at + 1;
+  var p = $("#prog");
+  p.setAttribute("aria-valuenow", at + 1);
+  $$("#prog i").forEach(function(t,i){
+    t.removeAttribute("data-s");
+    if(i === at) t.setAttribute("data-s","now");
+    else if(answered(i)) t.setAttribute("data-s","done");
+  });
+  $("#st-back").disabled = (at === 0 && !returnToReview);
+  refreshNext();
+  var f = STEPS[at].f;
+  if(f === "length") requestAnimationFrame(sizeVertical);
+  if(f === "firstName") setTimeout(function(){ try{ $("#in-babyname").focus(); }catch(e){} }, 80);
+  var h = $("#s-steps .body"); if(h) h.scrollTop = 0;
+}
+function goTo(i, fromReview){
+  at = Math.max(0, Math.min(STEPS.length - 1, i));
+  returnToReview = !!fromReview;
+  show("steps"); paintStep(); saveDraft();
+}
+$("#st-next").addEventListener("click", function(){
+  if(!answered(at)) return;
+  if(returnToReview){ returnToReview = false; openReview(); return; }
+  if(at === STEPS.length - 1){ openReview(); return; }
+  at++; paintStep(); saveDraft();
+});
+$("#st-back").addEventListener("click", function(){
+  if(returnToReview){ returnToReview = false; openReview(); return; }
+  if(at > 0){ at--; paintStep(); saveDraft(); }
+});
+document.addEventListener("keydown", function(e){
+  if(!$("#s-steps").classList.contains("on")) return;
+  if(e.key === "Enter" && e.target.tagName !== "BUTTON" && answered(at)){ e.preventDefault(); $("#st-next").click(); }
+});
+
+/* ------------------------------------------------------------- welcome -- */
+$("#go-details").addEventListener("click", function(){ show("details"); setTimeout(function(){ $("#in-name").focus(); },60); });
+$("#det-back").addEventListener("click", function(){ show("welcome"); });
+$("#ex-back").addEventListener("click", function(){ show("details"); });
+$("#rev-back").addEventListener("click", function(){ goTo(STEPS.length - 1); });
+
+/* -------------------------------------------------------------- details - */
+function showErr(wrap, box, msg){
+  $(wrap).toggleAttribute("data-invalid", !!msg);
+  var b = $(box); b.hidden = !msg; b.textContent = msg || "";
+}
+function validName(loud){
+  var v = $("#in-name").value.trim();
+  var bad = v.length < 2 ? "Please enter your name so we know whose guess this is." : "";
+  if(loud) showErr("#f-name","#e-name",bad);
+  return !bad;
+}
+function validMob(loud){
+  var raw = $("#in-mob").value.trim();
+  var m = auMobile(raw);
+  var bad = !raw ? "We need a mobile number to keep guesses apart."
+          : !m   ? "That doesn't look like an Australian mobile. Try 0412 345 678." : "";
+  if(loud) showErr("#f-mob","#e-mob",bad);
+  return !bad;
+}
+$("#in-name").addEventListener("input", function(){ if($("#f-name").hasAttribute("data-invalid")) validName(true); });
+$("#in-mob").addEventListener("input",  function(){ if($("#f-mob").hasAttribute("data-invalid")) validMob(true); });
+$("#in-name").addEventListener("blur", function(){ if(this.value.trim()) validName(true); });
+$("#in-mob").addEventListener("blur",  function(){ if(this.value.trim()) validMob(true); });
+$("#in-mob").addEventListener("keydown", function(e){ if(e.key === "Enter") $("#go-steps").click(); });
+
+$("#go-steps").addEventListener("click", async function(){
+  var okN = validName(true), okM = validMob(true);
+  if(!okN || !okM){ $(okN ? "#in-mob" : "#in-name").focus(); return; }
+  P.name = $("#in-name").value.trim();
+  P.mobile = auMobile($("#in-mob").value);
+
+  var btn = this; btn.disabled = true; btn.textContent = "Checking…";
+  var existing = await Store.findEntry(P.mobile);
+  btn.disabled = false; btn.textContent = "Continue";
+
+  if(existing && existing.birthDate){ offerUpdate(existing); return; }
+  saveDraft(); goTo(0);
+});
+
+/* ------------------------------------------------------- existing entry - */
+function offerUpdate(rec){
+  lastExisting = rec;
+  var revs = Number(rec.revisions || 0);
+  $("#ex-title").textContent = firstNameOf(rec.name || P.name) + ", you've already guessed";
+  $("#ex-sub").textContent = (rec.submittedAt ? "Locked in " + fmtWhen(rec.submittedAt) + ". " : "")
+    + (revs ? "Changed " + revs + (revs === 1 ? " time" : " times") + " since. " : "")
+    + "Keep it, or change your answers.";
+  renderCells(rec, "#ex-sum");
+  show("existing");
+}
+$("#ex-keep").addEventListener("click", function(){
+  submitted = true;
+  $("#done-title").textContent = "Your guesses stand";
+  $("#done-sub").textContent = "Nothing changed. Your original answers are still in.";
+  finishDone(lastExisting || {});
+});
+$("#ex-edit").addEventListener("click", function(){
+  replacing = true;
+  applyAnswers(lastExisting || {});
+  goTo(0);
+});
+function applyAnswers(rec){
+  P.birthDate = rec.birthDate || "";
+  P.birthHour = (rec.birthHour === null || rec.birthHour === undefined || rec.birthHour === "")
+                ? null : Number(rec.birthHour);
+  P.sex = rec.sex || ""; P.firstName = rec.firstName || "";
+  P.hair = rec.hair || ""; P.eyes = rec.eyes || ""; P.labour = rec.labour || "";
+  buildCal(); paintPicked(); buildHours(); paintHour();
+  setWeight(Number(rec.weightKg) || 3.5);
+  setLength(parseFloat(rec.length) || 50);
+  $("#in-babyname").value = P.firstName;
+  [["#sex","sex"],["#hair","hair"],["#eyes","eyes"],["#labour","labour"]].forEach(function(pair){
+    $$(pair[0] + " .choice").forEach(function(b){
+      b.setAttribute("aria-pressed", String(b.dataset.v === P[pair[1]])); });
+  });
+  paintAllBabies();
+}
+
+/* --------------------------------------------------------------- review - */
+function answerText(f){
+  if(f === "birthDate") return P.birthDate ? fmtDate(P.birthDate) : "";
+  if(f === "birthHour") return P.birthHour === null ? "" : fmtHour(P.birthHour);
+  if(f === "weightKg")  return Number(P.weightKg).toFixed(2) + " kg · " + kgToLbOz(Number(P.weightKg));
+  return P[f] || "";
+}
+function openReview(){
+  var list = $("#rev-list"); list.innerHTML = "";
+  STEPS.forEach(function(st,i){
+    var row = document.createElement("div");
+    row.className = "rev-row";
+    var v = answerText(st.f) || "Not answered";
+    row.innerHTML = '<span class="grow"><span class="k">'+esc(st.label)+'</span>' +
+                    '<span class="v">'+esc(v)+'</span></span>';
+    var edit = document.createElement("button");
+    edit.type = "button"; edit.className = "btn btn-text";
+    edit.textContent = "Edit";
+    edit.setAttribute("aria-label", "Edit " + st.label);
+    edit.addEventListener("click", function(){ goTo(i, true); });
+    row.appendChild(edit);
+    list.appendChild(row);
+  });
+  $("#rev-err").hidden = true;
+  $("#draft-note").hidden = submitted;
+  paintAllBabies();
+  show("review");
+}
+
+/* ---------------------------------------------------------------- submit */
+$("#submit").addEventListener("click", async function(){
+  var gap = firstGap();
+  var errBox = $("#rev-err");
+  if(gap > -1){
+    errBox.hidden = false;
+    errBox.textContent = STEPS[gap].label + " is still blank. Tap Edit beside it to finish.";
+    return;
+  }
+  errBox.hidden = true;
+
+  var btn = this; btn.disabled = true; btn.textContent = "Locking in…";
+  var record = {
+    name: P.name, mobile: P.mobile,
+    submittedAt: (replacing && lastExisting && lastExisting.submittedAt)
+      ? lastExisting.submittedAt : new Date().toISOString(),
+    updatedAt: replacing ? new Date().toISOString() : "",
+    birthDate: P.birthDate, birthHour: P.birthHour, weightKg: P.weightKg,
+    sex: P.sex, firstName: P.firstName, length: P.length,
+    hair: P.hair, eyes: P.eyes, labour: P.labour
+  };
+
+  // Someone may have entered on another device since this page loaded.
+  if(!replacing){
+    var dupe = await Store.findEntry(P.mobile);
+    if(dupe && dupe.birthDate){ btn.disabled = false; btn.textContent = "Lock in my guesses"; offerUpdate(dupe); return; }
+  }
+
+  var out = await Store.saveEntry(record, replacing);
+  btn.disabled = false; btn.textContent = "Lock in my guesses";
+
+  if(out && out.duplicate){
+    errBox.hidden = false;
+    errBox.textContent = replacing
+      ? "We couldn't replace your guesses just yet. Your originals still stand — try again shortly."
+      : "That number already has guesses in.";
+    if(!replacing) offerUpdate(out.entry || record);
+    return;
+  }
+  if(out && out.unsaved){
+    // Answers are kept: the draft is untouched and nothing is cleared.
+    errBox.hidden = false;
+    errBox.textContent = "That didn't reach us — check your signal and tap again. Your answers are safe.";
+    return;
+  }
+
+  submitted = true; clearDraft();
+  $("#done-title").textContent = replacing ? "Guesses updated!" : "Guesses locked in!";
+  $("#done-sub").textContent = replacing
+    ? "Your new answers replaced the old ones on " + fmtWhen(record.updatedAt) + "."
+    : "Thanks " + firstNameOf(P.name) + " — your guesses for Baby Strachan are in.";
+  replacing = false;
+  finishDone(record);
+});
+
+function renderCells(r, target){
+  var items = [
+    ["Arrival", r.birthDate ? fmtDate(r.birthDate) : "—"],
+    ["Time", r.birthHour === null || r.birthHour === undefined ? "—" : fmtHour(r.birthHour)],
+    ["Weight", r.weightKg ? Number(r.weightKg).toFixed(2) + " kg" : "—"],
+    ["Length", r.length || "—"],
+    ["Boy or girl", r.sex || "—"],
+    ["Name", r.firstName || "—"],
+    ["Hair", r.hair || "—"],
+    ["Eyes", r.eyes || "—"],
+    ["Labour", r.labour || "—"]
+  ];
+  $(target).innerHTML = items.map(function(it){
+    return '<div class="sumcell"><div class="k">'+it[0]+'</div><div class="v">'+esc(it[1])+'</div></div>';
+  }).join("");
+}
+function finishDone(rec){
+  renderCells(rec, "#done-sum");
+  $("#done-foot").textContent = "You can change these any time before baby arrives — just open this page again "
+    + "on the same number. Mobile numbers are never shown in the results.";
+  applyAnswers(rec);
+  paintBaby($("#baby-done"));
+  show("done");
+}
+$("#done-edit").addEventListener("click", function(){
+  replacing = true; submitted = false;
+  lastExisting = lastExisting || null;
+  openReview();
+});
+
+/* ---------------------------------------------------------------- resume */
+(function initDraft(){
+  var d = lsGet(LS_DRAFT);
+  if(!d || !d.P) return;
+  var filled = 0;
+  STEPS.forEach(function(st){
+    var v = d.P[st.f];
+    if(st.f === "weightKg" || st.f === "length") return;
+    if(v !== "" && v !== null && v !== undefined) filled++;
+  });
+  if(!filled && !d.P.name) return;
+  $("#resume-box").hidden = false;
+  $("#resume-text").textContent = "Draft saved on this device" +
+    (d.savedAt ? " " + fmtWhen(d.savedAt) : "") + ". Not sent yet.";
+  $("#resume-go").addEventListener("click", function(){
+    for(var k in d.P) if(Object.prototype.hasOwnProperty.call(P,k)) P[k] = d.P[k];
+    $("#in-name").value = P.name || ""; $("#in-mob").value = prettyMobile(P.mobile) || "";
+    applyAnswers(P);
+    if(P.name && P.mobile) goTo(Math.min(d.at || 0, STEPS.length - 1));
+    else show("details");
+  });
+  $("#resume-clear").addEventListener("click", function(){
+    clearDraft(); $("#resume-box").hidden = true;
+  });
+})();
+
+/* ============================================================================
+   SCORING — closest-answer on date, hour, weight and length; exact elsewhere.
+   ========================================================================== */
+function scoreEntry(e, a){
+  var pts = CONFIG.points, out = {}, total = 0;
+  if(a.birthDate && e.birthDate){
+    var days = Math.abs((dOf(e.birthDate) - dOf(a.birthDate)) / 86400000);
+    out.date = Math.max(0, Math.round(pts.date - days * 3));
+  } else out.date = 0;
+  if(a.birthHour !== null && a.birthHour !== undefined && a.birthHour !== "" && e.birthHour !== null){
+    var raw = Math.abs(Number(a.birthHour) - Number(e.birthHour));
+    out.hour = Math.max(0, Math.round(pts.hour - Math.min(raw, 24 - raw) * 2));
+  } else out.hour = 0;
+  out.weight = a.weightKg
+    ? Math.max(0, Math.round(pts.weight - Math.abs(Number(a.weightKg) - Number(e.weightKg)) / 0.075)) : 0;
+  var ecm = parseFloat(e.length), acm = parseFloat(a.length);
+  out.length = (!isNaN(ecm) && !isNaN(acm))
+    ? Math.max(0, Math.round(pts.length - Math.abs(acm - ecm) * 2)) : 0;
+  function eq(x,y){ return !!x && !!y && String(x).trim().toLowerCase() === String(y).trim().toLowerCase(); }
+  out.sex    = eq(e.sex, a.sex)       ? pts.sex : 0;
+  out.hair   = eq(e.hair, a.hair)     ? pts.hair : 0;
+  out.eyes   = eq(e.eyes, a.eyes)     ? pts.eyes : 0;
+  out.labour = eq(e.labour, a.labour) ? pts.labour : 0;
+  if(eq(e.firstName, a.firstName)) out.name = pts.name;
+  else if(a.firstName && e.firstName &&
+          a.firstName.trim().charAt(0).toLowerCase() === e.firstName.trim().charAt(0).toLowerCase())
+    out.name = Math.round(pts.name * 0.32);
+  else out.name = 0;
+  Object.keys(out).forEach(function(k){ total += out[k]; });
+  out.total = total;
+  return out;
+}
+
+/* ---------------------------------------------------------------- admin - */
+function actualFromForm(){
+  return { birthDate:$("#a-date").value || "",
+    birthHour: $("#a-hour").value === "" ? null : Number($("#a-hour").value),
+    weightKg:  $("#a-weight").value === "" ? null : Number($("#a-weight").value),
+    length:    $("#a-length").value ? ($("#a-length").value + " cm") : "",
+    sex:$("#a-sex").value, firstName:$("#a-name").value.trim(),
+    hair:$("#a-hair").value, eyes:$("#a-eyes").value, labour:$("#a-labour").value };
+}
+function fillActual(a){
+  if(!a) return;
+  $("#a-date").value = a.birthDate || "";
+  $("#a-hour").value = (a.birthHour === null || a.birthHour === undefined) ? "" : a.birthHour;
+  $("#a-weight").value = (a.weightKg === null || a.weightKg === undefined) ? "" : a.weightKg;
+  $("#a-length").value = a.length ? parseFloat(a.length) : "";
+  $("#a-sex").value = a.sex || ""; $("#a-name").value = a.firstName || "";
+  $("#a-hair").value = a.hair || ""; $("#a-eyes").value = a.eyes || ""; $("#a-labour").value = a.labour || "";
+}
+async function renderKitchen(){
+  var entries = await Store.allEntries(), actual = await Store.getActual();
+  var scored = !!(actual && actual.birthDate);
+  var thead = $("#a-table thead"), tbody = $("#a-table tbody");
+  entries.sort(function(x,y){ return new Date(x.submittedAt) - new Date(y.submittedAt); });
+  if(!entries.length){
+    thead.innerHTML = "";
+    tbody.innerHTML = '<tr><td style="white-space:normal;color:var(--muted)">No guesses yet. The first one shows up here.</td></tr>';
+  } else if(scored){
+    var rows = entries.map(function(e){ return { e:e, s:scoreEntry(e, actual) }; })
+                      .sort(function(x,y){ return y.s.total - x.s.total; });
+    thead.innerHTML = "<tr><th>#</th><th>Name</th><th>Points</th><th>Date</th><th>Hour</th><th>Weight</th><th>Length</th><th>Name guess</th><th>Updated</th></tr>";
+    tbody.innerHTML = rows.map(function(r,i){
+      return "<tr><td>"+(i+1)+"</td><td>"+esc(r.e.name)+"</td><td><b>"+r.s.total+"</b></td><td>"+fmtDate(r.e.birthDate)+" ("+r.s.date+")</td>"+
+        "<td>"+fmtHour(r.e.birthHour)+" ("+r.s.hour+")</td><td>"+Number(r.e.weightKg).toFixed(2)+" ("+r.s.weight+")</td>"+
+        "<td>"+esc(r.e.length)+" ("+r.s.length+")</td><td>"+esc(r.e.firstName)+" ("+r.s.name+")</td>"+
+        "<td>"+(r.e.updatedAt ? fmtWhen(r.e.updatedAt) : "—")+"</td></tr>";
+    }).join("");
+  } else {
+    thead.innerHTML = "<tr><th>Name</th><th>Mobile</th><th>Submitted</th><th>Updated</th><th>Date</th><th>Hour</th><th>Weight</th><th>Length</th><th>Sex</th><th>Name</th><th>Hair</th><th>Eyes</th><th>Labour</th></tr>";
+    tbody.innerHTML = entries.map(function(e){
+      return "<tr><td>"+esc(e.name)+"</td><td>"+prettyMobile(e.mobile)+"</td><td>"+fmtWhen(e.submittedAt)+"</td>"+
+        "<td>"+(e.updatedAt ? fmtWhen(e.updatedAt) : "—")+"</td><td>"+fmtDate(e.birthDate)+"</td><td>"+fmtHour(e.birthHour)+
+        "</td><td>"+Number(e.weightKg).toFixed(2)+" kg</td><td>"+esc(e.length)+"</td><td>"+esc(e.sex)+"</td><td>"+esc(e.firstName)+
+        "</td><td>"+esc(e.hair)+"</td><td>"+esc(e.eyes)+"</td><td>"+esc(e.labour)+"</td></tr>";
+    }).join("");
+  }
+  $("#a-status").textContent = entries.length + (entries.length === 1 ? " guess" : " guesses") +
+    (scored ? " · scored" : " · enter the results to score");
+  fillActual(actual);
+}
+$("#a-save").addEventListener("click", async function(){
+  this.textContent = "Saving…"; await Store.setActual(actualFromForm());
+  this.textContent = "Save & score"; renderKitchen();
+});
+$("#a-reload").addEventListener("click", renderKitchen);
+
+/* ----------------------------------------------------------------- boot - */
+function route(){ if(location.hash === "#kitchen"){ show("kitchen"); renderKitchen(); } }
+window.addEventListener("hashchange", route);
+
+buildCal(); paintPicked(); buildHours(); paintHour();
+setWeight(3.5); setLength(50); paintAllBabies(); paintStep();
+route();
+</script>
+
+</body>
+</html>
